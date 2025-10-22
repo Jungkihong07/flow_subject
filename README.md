@@ -14,7 +14,7 @@
 
 ### Backend
 
-- **Spring Boot 3.x (Java 17)**
+- **Spring Boot 3.3 (Java 21)**
 - **Spring Data JPA + H2 Database**
 - **Gradle**
 
