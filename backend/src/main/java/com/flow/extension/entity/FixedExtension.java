@@ -1,5 +1,6 @@
 package com.flow.extension.entity;
 
+import com.flow.extension.dto.FixedExtensionDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,4 +29,16 @@ public class FixedExtension {
         this.status = status;
     }
 
+    // 도메인 로직: 확장자 차단 상태 변경
+    public void changeBlockedStatus(Status status) {
+        this.status = status;
+    }
+
+    // DTO 변환 메서드
+    public FixedExtensionDto toDto() {
+        return FixedExtensionDto.builder()
+                .name(this.name)
+                .status(this.status)
+                .build();
+    }
 }

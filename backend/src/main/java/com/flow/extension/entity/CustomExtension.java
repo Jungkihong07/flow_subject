@@ -1,5 +1,6 @@
 package com.flow.extension.entity;
 
+import com.flow.extension.dto.ExtensionDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,5 +22,12 @@ public class CustomExtension {
     @Builder
     public CustomExtension(String name) {
         this.name = name;
+    }
+
+    // DTO 변환 메서드
+    public ExtensionDto toDto() {
+        return ExtensionDto.builder()
+                .name(this.name)
+                .build();
     }
 }
