@@ -82,10 +82,10 @@ jobs:
           runtime: java21
           env_variables:
             SPRING_PROFILES_ACTIVE: "prod"
-            DB_USERNAME: "projects/${{ secrets.GCP_PROJECT_ID }}/secrets/db-username/versions/latest"
-            DB_PASSWORD: "projects/${{ secrets.GCP_PROJECT_ID }}/secrets/db-password/versions/latest"
-            CLOUD_SQL_CONNECTION_NAME: "projects/${{ secrets.GCP_PROJECT_ID }}/secrets/cloud-sql-connection-name/versions/latest"
-            CLOUD_SQL_DATABASE: "projects/${{ secrets.GCP_PROJECT_ID }}/secrets/cloud-sql-database/versions/latest"
+            DB_USERNAME: "@SecretManager:db-username"
+            DB_PASSWORD: "@SecretManager:db-password"
+            CLOUD_SQL_CONNECTION_NAME: "@SecretManager:cloud-sql-connection-name"
+            CLOUD_SQL_DATABASE: "@SecretManager:cloud-sql-database"
           EOF
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
