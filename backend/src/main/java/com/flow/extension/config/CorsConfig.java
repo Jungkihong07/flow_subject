@@ -18,9 +18,8 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "http://localhost:5175",
-                        "https://storage.googleapis.com",
-                        "https://flow-frontend.storage.googleapis.com",
-                        "https://extension-backend-mdqo5xrjsq-du.a.run.app")
+                        "https://compact-factor-476014-p9.web.app",
+                        "https://compact-factor-476014-p9.firebaseapp.com")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
@@ -31,9 +30,8 @@ public class CorsConfig implements WebMvcConfigurer {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:5175",
-                "https://storage.googleapis.com",
-                "https://flow-frontend.storage.googleapis.com",
-                "https://extension-backend-mdqo5xrjsq-du.a.run.app"));
+                "https://compact-factor-476014-p9.web.app",
+                "https://compact-factor-476014-p9.firebaseapp.com"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
