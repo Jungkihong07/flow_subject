@@ -9,10 +9,10 @@
 - `GCP_SA_KEY`: 서비스 계정 키 JSON (전체 내용)
 
 ### 2. 데이터베이스 관련
-- `DB_USERNAME`: PostgreSQL 사용자명
+- `DB_USERNAME`: PostgreSQL 사용자명 (예: `postgres`)
 - `DB_PASSWORD`: PostgreSQL 비밀번호
-- `CLOUD_SQL_CONNECTION_NAME`: `compact-factor-476014-p9:asia-northeast3:flow-db`
-- `CLOUD_SQL_DATABASE`: 데이터베이스 이름 (예: `flow_db`)
+- `CLOUD_SQL_CONNECTION_NAME`: `compact-factor-476014-p9:asia-northeast3:extension-db`
+- `CLOUD_SQL_DATABASE`: `extension_db`
 
 ### 3. Cloud Storage 관련
 - `GCS_BUCKET_NAME`: `flow-frontend`
@@ -33,7 +33,7 @@ PROJECT_ID:REGION:INSTANCE_NAME
 
 예시:
 ```
-compact-factor-476014-p9:asia-northeast3:flow-db
+compact-factor-476014-p9:asia-northeast3:extension-db
 ```
 
 ## 확인 방법

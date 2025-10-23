@@ -56,7 +56,6 @@ jobs:
           cd backend
           cat > app-deploy.yaml << EOF
           runtime: java21
-          instance_class: F2
           env_variables:
             SPRING_PROFILES_ACTIVE: "prod"
             DB_USERNAME: "${{ secrets.DB_USERNAME }}"
@@ -102,6 +101,16 @@ jobs:
       - name: Deploy to App Engine
         run: |
           cd backend
-          gcloud app deploy app-deploy.yaml --verbosity=debug
+          echo "Deploying with minimal configuration..."
+          gcloud app deploy app-deploy.yaml --quiet --no-promote
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Promote deployment
+        run: |
+          cd backend
+          echo "Promoting deployment..."
+          gcloud app services set-traffic default --splits=20251023t172802=1 --quiet
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        continue-on-error: true
