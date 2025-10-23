@@ -51,13 +51,51 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Create minimal app.yaml
+      - name: Grant Secret Manager access to App Engine service account
+        run: |
+          echo "Granting Secret Manager access to App Engine service account..."
+          gcloud projects add-iam-policy-binding ${{ secrets.GCP_PROJECT_ID }} \
+            --member="serviceAccount:${{ secrets.GCP_PROJECT_ID }}@appspot.gserviceaccount.com" \
+            --role="roles/secretmanager.secretAccessor"
+          echo "✅ Secret Manager access granted"
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Create secrets in Secret Manager
+        run: |
+          echo "Creating secrets in Secret Manager..."
+
+          # DB_USERNAME secret 생성/업데이트
+          echo "${{ secrets.DB_USERNAME }}" | gcloud secrets create db-username --data-file=- 2>/dev/null || \
+          echo "${{ secrets.DB_USERNAME }}" | gcloud secrets versions add db-username --data-file=-
+
+          # DB_PASSWORD secret 생성/업데이트
+          echo "${{ secrets.DB_PASSWORD }}" | gcloud secrets create db-password --data-file=- 2>/dev/null || \
+          echo "${{ secrets.DB_PASSWORD }}" | gcloud secrets versions add db-password --data-file=-
+
+          # CLOUD_SQL_CONNECTION_NAME secret 생성/업데이트
+          echo "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}" | gcloud secrets create cloud-sql-connection-name --data-file=- 2>/dev/null || \
+          echo "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}" | gcloud secrets versions add cloud-sql-connection-name --data-file=-
+
+          # CLOUD_SQL_DATABASE secret 생성/업데이트
+          echo "${{ secrets.CLOUD_SQL_DATABASE }}" | gcloud secrets create cloud-sql-database --data-file=- 2>/dev/null || \
+          echo "${{ secrets.CLOUD_SQL_DATABASE }}" | gcloud secrets versions add cloud-sql-database --data-file=-
+
+          echo "✅ All secrets created/updated in Secret Manager"
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Create app.yaml with Secret Manager references
         run: |
           cd backend
           cat > app-deploy.yaml << EOF
           runtime: java21
           env_variables:
             SPRING_PROFILES_ACTIVE: "prod"
+            DB_USERNAME: "projects/${{ secrets.GCP_PROJECT_ID }}/secrets/db-username/versions/latest"
+            DB_PASSWORD: "projects/${{ secrets.GCP_PROJECT_ID }}/secrets/db-password/versions/latest"
+            CLOUD_SQL_CONNECTION_NAME: "projects/${{ secrets.GCP_PROJECT_ID }}/secrets/cloud-sql-connection-name/versions/latest"
+            CLOUD_SQL_DATABASE: "projects/${{ secrets.GCP_PROJECT_ID }}/secrets/cloud-sql-database/versions/latest"
           EOF
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -97,9 +135,10 @@ jobs:
       - name: Deploy to App Engine
         run: |
           cd backend
-          echo "Deploying with Cloud SQL IAM permissions..."
+          echo "Deploying with Secret Manager integration..."
           echo "App Engine service account: compact-factor-476014-p9@appspot.gserviceaccount.com"
           echo "Cloud SQL instance: extension-db"
-          gcloud app deploy app-deploy.yaml --quiet --set-env-vars="DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},CLOUD_SQL_CONNECTION_NAME=${{ secrets.CLOUD_SQL_CONNECTION_NAME }},CLOUD_SQL_DATABASE=${{ secrets.CLOUD_SQL_DATABASE }}"
+          echo "Using Secret Manager for environment variables"
+          gcloud app deploy app-deploy.yaml --quiet
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
