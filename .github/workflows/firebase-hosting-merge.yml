@@ -12,6 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: cd frontend && npm install && npm run build
+        env:
+          VITE_API_URL: https://extension-backend-681456847825.asia-northeast3.run.app
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
