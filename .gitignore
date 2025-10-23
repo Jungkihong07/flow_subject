@@ -42,9 +42,9 @@ Thumbs.db
 
 # GCP Service Account Keys
 github-actions-key.json
-*.json
 !package.json
 !package-lock.json
+
 
 # ETC
 ENV_TEMPLATE.md
