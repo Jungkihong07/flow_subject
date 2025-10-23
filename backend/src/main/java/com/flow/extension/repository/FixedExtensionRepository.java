@@ -10,4 +10,3 @@ import java.util.Optional;
 public interface FixedExtensionRepository extends JpaRepository<FixedExtension, Long> {
     Optional<FixedExtension> findByName(String name);
 }
-
