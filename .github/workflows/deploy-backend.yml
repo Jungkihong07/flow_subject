@@ -119,8 +119,14 @@ jobs:
           cd backend
           echo "Generated app-deploy.yaml content:"
           cat app-deploy.yaml
+          echo ""
+          echo "Environment variables check:"
+          echo "DB_USERNAME length: ${#DB_USERNAME}"
+          echo "CLOUD_SQL_CONNECTION_NAME: $CLOUD_SQL_CONNECTION_NAME"
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          CLOUD_SQL_CONNECTION_NAME: ${{ secrets.CLOUD_SQL_CONNECTION_NAME }}
 
       - name: Deploy to App Engine
         run: |
