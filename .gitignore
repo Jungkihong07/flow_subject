@@ -48,4 +48,5 @@ github-actions-key.json
 
 # ETC
 ENV_TEMPLATE.md
+GITHUB_SECRETS_GUIDE.md
 github-actions-key.json
