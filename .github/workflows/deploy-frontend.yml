@@ -31,7 +31,7 @@ jobs:
           cd frontend
           npm run build
         env:
-          VITE_API_URL: https://${{ secrets.GCP_PROJECT_ID }}.appspot.com
+          VITE_API_URL: https://extension-backend-681456847825.asia-northeast3.run.app
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
