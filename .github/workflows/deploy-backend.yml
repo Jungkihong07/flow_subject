@@ -51,17 +51,13 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Create app.yaml with environment variables
+      - name: Create minimal app.yaml
         run: |
           cd backend
           cat > app-deploy.yaml << EOF
           runtime: java21
           env_variables:
             SPRING_PROFILES_ACTIVE: "prod"
-            DB_USERNAME: "${{ secrets.DB_USERNAME }}"
-            DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
-            CLOUD_SQL_CONNECTION_NAME: "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
-            CLOUD_SQL_DATABASE: "${{ secrets.CLOUD_SQL_DATABASE }}"
           EOF
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -104,6 +100,6 @@ jobs:
           echo "Deploying with Cloud SQL IAM permissions..."
           echo "App Engine service account: compact-factor-476014-p9@appspot.gserviceaccount.com"
           echo "Cloud SQL instance: extension-db"
-          gcloud app deploy app-deploy.yaml --quiet
+          gcloud app deploy app-deploy.yaml --quiet --set-env-vars="DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},CLOUD_SQL_CONNECTION_NAME=${{ secrets.CLOUD_SQL_CONNECTION_NAME }},CLOUD_SQL_DATABASE=${{ secrets.CLOUD_SQL_DATABASE }}"
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
