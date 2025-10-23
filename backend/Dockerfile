@@ -4,16 +4,16 @@ FROM gradle:8.10.2-jdk21 AS build
 # Set working directory
 WORKDIR /app
 
-# Copy gradle files first for better caching
-COPY gradle/ gradle/
+# Copy gradle wrapper files first for better caching
+COPY gradle gradle
 COPY gradlew gradlew.bat
 COPY build.gradle settings.gradle
 
 # Copy source code
-COPY src/ src/
+COPY src src
 
 # Build the application (skip tests for faster build)
-RUN gradle clean build -x test
+RUN ./gradlew clean build -x test
 
 # Runtime stage
 FROM eclipse-temurin:21-jre-alpine
