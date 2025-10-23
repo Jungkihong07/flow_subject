@@ -15,6 +15,7 @@ env:
   SERVICE_NAME: extension-backend
   REGION: asia-northeast3
   REGISTRY: asia-northeast3-docker.pkg.dev
+  REPOSITORY: extension-backend
 
 jobs:
   deploy:
@@ -63,16 +64,16 @@ jobs:
       - name: Build Docker image
         run: |
           cd backend
-          docker build -t $REGISTRY/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA .
+          docker build -t $REGISTRY/$PROJECT_ID/$REPOSITORY/$SERVICE_NAME:$GITHUB_SHA .
 
       - name: Push Docker image to Artifact Registry
         run: |
-          docker push $REGISTRY/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA
+          docker push $REGISTRY/$PROJECT_ID/$REPOSITORY/$SERVICE_NAME:$GITHUB_SHA
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy $SERVICE_NAME \
-            --image $REGISTRY/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA \
+            --image $REGISTRY/$PROJECT_ID/$REPOSITORY/$SERVICE_NAME:$GITHUB_SHA \
             --region $REGION \
             --platform managed \
             --allow-unauthenticated \
