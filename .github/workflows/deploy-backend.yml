@@ -101,16 +101,9 @@ jobs:
       - name: Deploy to App Engine
         run: |
           cd backend
-          echo "Deploying with minimal configuration..."
-          gcloud app deploy app-deploy.yaml --quiet --no-promote
+          echo "Deploying with Cloud SQL IAM permissions..."
+          echo "App Engine service account: compact-factor-476014-p9@appspot.gserviceaccount.com"
+          echo "Cloud SQL instance: extension-db"
+          gcloud app deploy app-deploy.yaml --quiet
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-
-      - name: Promote deployment
-        run: |
-          cd backend
-          echo "Promoting deployment..."
-          gcloud app services set-traffic default --splits=20251023t172802=1 --quiet
-        env:
-          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-        continue-on-error: true
