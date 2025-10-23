@@ -57,9 +57,6 @@ jobs:
           cat > app-deploy.yaml << EOF
           runtime: java21
           instance_class: F2
-          automatic_scaling:
-            min_instances: 1
-            max_instances: 10
           env_variables:
             SPRING_PROFILES_ACTIVE: "prod"
             DB_USERNAME: "${{ secrets.DB_USERNAME }}"
@@ -70,9 +67,17 @@ jobs:
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
+      - name: Verify app-deploy.yaml
+        run: |
+          cd backend
+          echo "Generated app-deploy.yaml content:"
+          cat app-deploy.yaml
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
       - name: Deploy to App Engine
         run: |
           cd backend
-          gcloud app deploy app-deploy.yaml --quiet
+          gcloud app deploy app-deploy.yaml --verbosity=debug
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
