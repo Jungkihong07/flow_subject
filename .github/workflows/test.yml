@@ -39,13 +39,12 @@ jobs:
           cd backend
           ./gradlew test
 
-      - name: Generate test report
-        uses: dorny/test-reporter@v1
-        if: success() || failure()
-        with:
-          name: Backend Tests
-          path: backend/build/test-results/test/TEST-*.xml
-          reporter: java-junit
+      - name: Test Results Summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "- Backend tests completed" >> $GITHUB_STEP_SUMMARY
+          echo "- Check the logs above for detailed results" >> $GITHUB_STEP_SUMMARY
 
   test-frontend:
     runs-on: ubuntu-latest
