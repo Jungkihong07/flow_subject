@@ -51,16 +51,6 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Grant Secret Manager access to App Engine service account
-        run: |
-          echo "Granting Secret Manager access to App Engine service account..."
-          gcloud projects add-iam-policy-binding ${{ secrets.GCP_PROJECT_ID }} \
-            --member="serviceAccount:${{ secrets.GCP_PROJECT_ID }}@appspot.gserviceaccount.com" \
-            --role="roles/secretmanager.secretAccessor"
-          echo "✅ Secret Manager access granted"
-        env:
-          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-
       - name: Create secrets in Secret Manager
         run: |
           echo "Creating secrets in Secret Manager..."
