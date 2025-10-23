@@ -51,11 +51,28 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Create app.yaml with environment variables
+        run: |
+          cd backend
+          cat > app-deploy.yaml << EOF
+          runtime: java21
+          instance_class: F2
+          automatic_scaling:
+            min_num_instances: 1
+            max_num_instances: 10
+          env_variables:
+            SPRING_PROFILES_ACTIVE: "prod"
+            DB_USERNAME: "${{ secrets.DB_USERNAME }}"
+            DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
+            CLOUD_SQL_CONNECTION_NAME: "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
+            CLOUD_SQL_DATABASE: "${{ secrets.CLOUD_SQL_DATABASE }}"
+          EOF
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+
       - name: Deploy to App Engine
         run: |
           cd backend
-          gcloud app deploy app.yaml \
-            --set-env-vars DB_USERNAME=${{ secrets.DB_USERNAME }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},CLOUD_SQL_CONNECTION_NAME=${{ secrets.CLOUD_SQL_CONNECTION_NAME }},CLOUD_SQL_DATABASE=${{ secrets.CLOUD_SQL_DATABASE }} \
-            --quiet
+          gcloud app deploy app-deploy.yaml --quiet
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
