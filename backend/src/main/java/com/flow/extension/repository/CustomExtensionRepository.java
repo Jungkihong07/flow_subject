@@ -12,3 +12,4 @@ public interface CustomExtensionRepository extends JpaRepository<CustomExtension
 
     boolean existsByName(String name);
 }
+
