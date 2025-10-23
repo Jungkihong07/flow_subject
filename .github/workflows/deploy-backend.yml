@@ -75,17 +75,17 @@ jobs:
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Create app.yaml with Secret Manager references
+      - name: Create app.yaml with environment variables
         run: |
           cd backend
           cat > app-deploy.yaml << EOF
           runtime: java21
           env_variables:
             SPRING_PROFILES_ACTIVE: "prod"
-            DB_USERNAME: "@SecretManager:db-username"
-            DB_PASSWORD: "@SecretManager:db-password"
-            CLOUD_SQL_CONNECTION_NAME: "@SecretManager:cloud-sql-connection-name"
-            CLOUD_SQL_DATABASE: "@SecretManager:cloud-sql-database"
+            DB_USERNAME: "${{ secrets.DB_USERNAME }}"
+            DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
+            CLOUD_SQL_CONNECTION_NAME: "${{ secrets.CLOUD_SQL_CONNECTION_NAME }}"
+            CLOUD_SQL_DATABASE: "${{ secrets.CLOUD_SQL_DATABASE }}"
           EOF
         env:
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
