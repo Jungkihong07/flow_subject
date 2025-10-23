@@ -16,6 +16,7 @@ frontend/dist
 frontend/build
 backend/build
 backend/out
+backend/bin
 
 # Dependencies
 frontend/node_modules

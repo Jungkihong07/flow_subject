@@ -24,12 +24,14 @@ public class ExtensionService {
 
     public List<FixedExtensionDto> getAllFixedExtensions() {
         return fixedExtensionRepository.findAll().stream()
+                .sorted((a, b) -> a.getName().compareTo(b.getName()))
                 .map(entity -> entity.toDto())
                 .collect(Collectors.toList());
     }
 
     public List<ExtensionDto> getAllCustomExtensions() {
         return customExtensionRepository.findAll().stream()
+                .sorted((a, b) -> a.getName().compareTo(b.getName()))
                 .map(entity -> entity.toDto())
                 .collect(Collectors.toList());
     }
@@ -46,12 +48,20 @@ public class ExtensionService {
 
     @Transactional
     public ExtensionDto addCustomExtension(String name) {
-        if (customExtensionRepository.existsByName(name)) {
-            throw new RuntimeException("Custom extension already exists: " + name);
+        String trimmedName = name.toLowerCase().trim();
+
+        // 고정 확장자와 중복되는지 확인
+        if (fixedExtensionRepository.findByName(trimmedName).isPresent()) {
+            throw new RuntimeException("Cannot add fixed extension as custom extension: " + trimmedName);
+        }
+
+        // 이미 존재하는 커스텀 확장자인지 확인
+        if (customExtensionRepository.existsByName(trimmedName)) {
+            throw new RuntimeException("Custom extension already exists: " + trimmedName);
         }
 
         CustomExtension customExtension = CustomExtension.builder()
-                .name(name.toLowerCase().trim())
+                .name(trimmedName)
                 .build();
 
         return customExtensionRepository.save(customExtension).toDto();
