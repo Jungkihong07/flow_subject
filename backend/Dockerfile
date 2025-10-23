@@ -4,13 +4,8 @@ FROM gradle:8.10.2-jdk21 AS build
 # Set working directory
 WORKDIR /app
 
-# Copy gradle wrapper files first for better caching
-COPY gradle gradle
-COPY gradlew gradlew.bat
-COPY build.gradle settings.gradle
-
-# Copy source code
-COPY src src
+# Copy all files
+COPY . .
 
 # Build the application (skip tests for faster build)
 RUN ./gradlew clean build -x test
