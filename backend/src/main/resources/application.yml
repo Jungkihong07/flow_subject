@@ -24,3 +24,32 @@ spring:
 logging:
   level:
     com.flow.extension: DEBUG
+
+---
+# 프로덕션 환경 설정 (Docker Compose)
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:db}:${DB_PORT:5432}/${DB_NAME:extensiondb}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+  h2:
+    console:
+      enabled: false
+
+logging:
+  level:
+    com.flow.extension: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: WARN

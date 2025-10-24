@@ -26,18 +26,18 @@
 
 ### Database
 
+- **PostgreSQL** (Docker 컨테이너)
 - **H2** (로컬 개발용)
-- **Cloud SQL (PostgreSQL)** (프로덕션용)
 
 ### Deployment
 
-- **Backend**: Google Cloud Run
+- **Backend**: Google Compute Engine (GCE) + Docker Compose
 - **Frontend**: Firebase Hosting
 
 ## 배포된 서비스
 
 - **프론트엔드**: https://compact-factor-476014-p9.web.app
-- **백엔드 API**: https://extension-backend-681456847825.asia-northeast3.run.app
+- **백엔드 API**: GCE 인스턴스에서 실행 (포트 8080)
 
 ## 로컬 개발 환경 설정
 
@@ -53,23 +53,7 @@ cd backend
 ```bash
 cd frontend
 npm install
-# 로컬 개발 시 백엔드 API URL 설정
-export VITE_API_URL=http://localhost:8080  # Linux/Mac
-# 또는
-set VITE_API_URL=http://localhost:8080     # Windows
 npm run dev
-```
-
-### 프로덕션 빌드
-
-```bash
-cd frontend
-npm install
-# 프로덕션 빌드 시 Cloud Run API URL 설정
-export VITE_API_URL=https://extension-backend-681456847825.asia-northeast3.run.app  # Linux/Mac
-# 또는
-set VITE_API_URL=https://extension-backend-681456847825.asia-northeast3.run.app     # Windows
-npm run build
 ```
 
 ### Docker로 백엔드 실행
