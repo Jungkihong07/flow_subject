@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "cross-env VITE_API_URL=https://extension-backend-681456847825.asia-northeast3.run.app vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

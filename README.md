@@ -53,7 +53,23 @@ cd backend
 ```bash
 cd frontend
 npm install
+# 로컬 개발 시 백엔드 API URL 설정
+export VITE_API_URL=http://localhost:8080  # Linux/Mac
+# 또는
+set VITE_API_URL=http://localhost:8080     # Windows
 npm run dev
+```
+
+### 프로덕션 빌드
+
+```bash
+cd frontend
+npm install
+# 프로덕션 빌드 시 Cloud Run API URL 설정
+export VITE_API_URL=https://extension-backend-681456847825.asia-northeast3.run.app  # Linux/Mac
+# 또는
+set VITE_API_URL=https://extension-backend-681456847825.asia-northeast3.run.app     # Windows
+npm run build
 ```
 
 ### Docker로 백엔드 실행
